@@ -1,0 +1,26 @@
+sudo apt-get install git
+git init project/2/   sakhtan
+git clone <path>      gereftan kolle proje
+git add <path>   ezafe kardan file khas
+git add .		ezafe kardan hame
+git add --all      ezafe kardan hame
+git commit -m"commit massage"    snapshot
+git commit -am  "commit massage"  snapshot and add
+git commit -a  "massage ziad"  "add all"
+git log     list of commits
+git checkout  <commit-id>    didan commit haye ghabli  id az log hast
+git revert <commit-id>   bargardoondan
+git reset <commit-id>    commit haye az oon be bad ro pak mikone
+git remote add origin <address server>   address dadane server
+git push <remote> <branch>
+git pull   #          #  faghat update ha
+head akharin commit
+git branch    esm hame shakhe ha
+git branch <address>   shakhe sazi
+git checkout <branch>  mire roo oon shakhe
+git merge <branch> (((--rebase))) olaviat  tarkib kardane branch ha avval ba check out mirim roo ye branch bad ba in code in branch va branch ha ro merge mikonin=m
+
+
+github.com
+gitlab.com
+bitbucket.com
