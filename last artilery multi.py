@@ -41,16 +41,12 @@ class gun (object):
         if command in self.temp_options:
             self.command = command
             if self.command == 0:
-                self.tar = input("enter target coordinate : ")
                 return self.fire()
             elif self.command == 1:
-                self.tar = input("enter target coordinate : ")
                 return self.atomicshot()
             elif self.command == 2:
-                self.tar = input("enter target coordinate : ")
                 return self.doubleshot()
             elif self.command == 3:
-                self.tar = input("enter target coordinate : ")
                 return self.ultrashot()
         else:
             print "wrong command"
@@ -249,6 +245,15 @@ class gun (object):
             print "prize code is : " + `sap`
         else :
             return False
+
+
+    def set_tar(self,tar):
+        if tar >=1 and tar <= 5:
+            self.tar = tar
+        else:
+            print "wrong coordinate"
+            tar = input("enter your coordinate again : ")
+            self.set_tar(tar)    
         
 ##########################################
 gun_1 = gun()
@@ -267,11 +272,13 @@ gun_2.set_pos()
 gun_1.set_ammo(ammo)
 gun_2.set_ammo(ammo)
 ####################
-while ((gun_1.get_ammo() > 0 or gun_1.get_ammo() > 0 or gun_1.cehck_spec() or gun_2.cehck_spec()) and gun_2.get_armor() > 0 and gun_2.get_armor() > 0):
+while ((gun_1.get_ammo() > 0 or gun_2.get_ammo() > 0 or gun_1.cehck_spec() or gun_2.cehck_spec()) and gun_1.get_armor() > 0 and gun_2.get_armor() > 0):
 
 
     if gun_1.get_ammo() > 0 or gun_1.cehck_spec():
         gun_1.set_pos()
+        tar_1 = input("enter target coordinate : ")
+        gun_1.set_tar(tar_1)
         c1 = gun_1.choice_print()
         c2 = input("enter command sir : ")
         c3 = gun_1.choice(c2)
@@ -291,6 +298,8 @@ while ((gun_1.get_ammo() > 0 or gun_1.get_ammo() > 0 or gun_1.cehck_spec() or gu
 
     if gun_2.get_ammo() > 0 or gun_2.cehck_spec():
         gun_2.set_pos()
+        tar_2 = input("enter target coordinate : ")
+        gun_2.set_tar(tar_2)
         c6 = gun_2.choice_print()
         c7 = input("enter command sir : ")
         c8 = gun_2.choice(c7)
