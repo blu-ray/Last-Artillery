@@ -236,6 +236,7 @@ class gun (object):
         else:
             return True
 
+
     def give_prize(self,condition):
         if condition == True:
             sap = random.randrange(1,4)
@@ -250,99 +251,8 @@ class gun (object):
             return False
         
 ##########################################
-class pc(gun):
-
-    def choice_print(self):
-        """ command type """
-        self.temp_options = []
-        self.options = []
-        if self.get_ammo() >= 1:
-            self.options.append("0 : normal fire ")
-            self.temp_options.append(0)
-        if self.atomic >= 1:
-            self.options.append("1 : atomic fire " )
-            for i in range (self.atomic):
-                self.temp_options.append(1)
-                if self.get_ammo() >= 1:
-                    self.temp_options.append(0)
-        if self.double >= 1:
-            self.options.append("2 : double fire " )
-            for j in range (self.double):
-                self.temp_options.append(2)
-                if self.get_ammo() >= 1:
-                    self.temp_options.append(0)
-        if self.ultra >= 1:
-            self.options.append("3 : ultra fire " )
-            for k in range (self.ultra):
-                self.temp_options.append(3)
-                if self.get_ammo() >= 1:
-                    self.temp_options.append(0)
-        i,j,k = 0,0,0
-        return self.temp_options
-
-
-    def choice(self):
-        command = random.randrange(0,len(self.temp_options))
-        self.command = self.temp_options[command]
-        if self.command == 0:
-            self.tar = random.randrange(1,6)
-            return self.fire()
-        elif self.command == 1:
-            self.tar = random.randrange(1,6)
-            return self.atomicshot()
-        elif self.command == 2:
-            self.tar = random.randrange(1,6)
-            return self.doubleshot()
-        elif self.command == 3:
-            self.tar = random.randrange(1,6)
-            return self.ultrashot()
-    
-
-    def fire(self):
-        """ shellik kardan """
-        self.tar = random.randrange(1,6)
-        if self.gun_ammo == 0:
-            print "no ammo"
-            return False
-        elif self.gun_ammo > 0:
-            self.gun_ammo -= 1
-            return True
-
-    def atomicshot(self):
-        self.tar = random.randrange(1,6)
-        if self.atomic == 0:
-            print "no atomic bomb"
-            return False
-        if self.atomic > 0:
-            self.atomic -= 1
-            return True
-        
-    def doubleshot (self):
-        self.tar = random.randrange(1,6)
-        if self.double == 0:
-            print "no double bomb"
-            return False
-        if self.double > 0:
-            self.double -= 1
-            return True
-
-    def ultrashot(self):
-        self.tar = random.randrange(1,6)
-        if self.ultra == 0:
-            print "no ultra ammo"
-            return False
-        if self.ultra > 0:
-            self.ultra -= 1
-            return True
-
-    def set_pos(self):
-        self.pos = random.randrange(1,6)
-
-
-
-##########################################
 gun_1 = gun()
-gun_2 = pc()
+gun_2 = gun()
 ####################
 ammo = 100
 armor = 7
@@ -352,14 +262,16 @@ gun_1.set_targets(targets)
 gun_2.set_targets(targets)
 gun_1.set_armor(armor)
 gun_2.set_armor(armor)
+gun_1.set_pos()
 gun_2.set_pos()
 gun_1.set_ammo(ammo)
 gun_2.set_ammo(ammo)
 ####################
 while ((gun_1.get_ammo() > 0 or gun_1.get_ammo() > 0 or gun_1.cehck_spec() or gun_2.cehck_spec()) and gun_2.get_armor() > 0 and gun_2.get_armor() > 0):
 
+
     if gun_1.get_ammo() > 0 or gun_1.cehck_spec():
-        c0 = gun_1.set_pos()
+        gun_1.set_pos()
         c1 = gun_1.choice_print()
         c2 = input("enter command sir : ")
         c3 = gun_1.choice(c2)
@@ -371,15 +283,17 @@ while ((gun_1.get_ammo() > 0 or gun_1.get_ammo() > 0 or gun_1.cehck_spec() or gu
         print "your ammo is : " + `gun_1.get_ammo()`
         print "enemy armor is : " + `gun_2.get_armor()`
         print "enemy ammo is : " + `gun_2.get_ammo()`
-        print "<><><><><><><><><><><><><><><><><><>\n"
+        print "<><><><><><><><><><><><><><><><><>"
         if gun_2.get_armor() == 0:
             print "****you won enemy destroyed****"
             break
-        
+    
+
     if gun_2.get_ammo() > 0 or gun_2.cehck_spec():
-        c6 = gun_2.set_pos()
-        c7 = gun_2.choice_print()
-        c8 = gun_2.choice()
+        gun_2.set_pos()
+        c6 = gun_2.choice_print()
+        c7 = input("enter command sir : ")
+        c8 = gun_2.choice(c7)
         c9 = gun_2.comm_type()
         print "enemy command code was : " + `c9`
         c10 = gun_1.under_attack(c9,gun_2.tar)
@@ -392,8 +306,6 @@ while ((gun_1.get_ammo() > 0 or gun_1.get_ammo() > 0 or gun_1.cehck_spec() or gu
         if gun_1.get_armor() == 0:
             print "****you lose you destroyed****"
             break        
-
-    
 
 
     if gun_1.get_ammo() == 0 and gun_2.get_ammo() == 0 and gun_1.cehck_spec()== False  and gun_2.cehck_spec()== False:
