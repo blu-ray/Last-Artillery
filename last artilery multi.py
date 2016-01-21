@@ -1,10 +1,12 @@
-#last update 16-1-2016     7:00 pm           #
+#last update 21 january 2016    5 AM         #
                                              #
 #last artilery                               #
                                              #
-#this is final single                        #
+#this is multi beta version                  #
 ##############################################
 import random
+import socket
+
 
 class gun (object):
 
@@ -31,7 +33,7 @@ class gun (object):
         if self.ultra >= 1:
             self.options.append("3 : ultra fire  " + `self.ultra` + " shot(s)" )
             self.temp_options.append(3)
-        print "\nchoose command : \n" 
+        print "\nchoose command : \n"
         for command in self.options :
             print command
         return self.temp_options
@@ -249,6 +251,9 @@ class gun (object):
             print "prize code is : " + `sap`
         else :
             return False
+
+    def say_status(self):
+        stat_str = str(self.pos) + str(self.atomic) + str(self.gun_ammo) + str(self.ultra) + str(self.double) + str(self.gun_armor)
         
 ##########################################
 gun_1 = gun()
@@ -262,12 +267,34 @@ gun_1.set_targets(targets)
 gun_2.set_targets(targets)
 gun_1.set_armor(armor)
 gun_2.set_armor(armor)
-gun_1.set_pos()
-gun_2.set_pos()
+#gun_1.set_pos()
+#gun_2.set_pos()
 gun_1.set_ammo(ammo)
 gun_2.set_ammo(ammo)
 ####################
-while ((gun_1.get_ammo() > 0 or gun_1.get_ammo() > 0 or gun_1.cehck_spec() or gun_2.cehck_spec()) and gun_2.get_armor() > 0 and gun_2.get_armor() > 0):
+
+#defining host or client and connet to host
+mysoc=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+role = raw_input("do you want to be host or client? ")
+
+if role=="host" :
+    ishost=True
+    host=socket.gethostname()
+    port=12345
+    mysoc.bind((host,port))
+    mysoc.listen(5)
+    client1, addr=mysoc.accept()
+    print "got connection from", addr
+    
+if role == "client" :
+    ishost=False
+    host = raw_input("host Computername or IP :")
+    port=12345
+    mysoc.connect((host,port))
+    
+
+
+while ((gun_1.get_ammo() > 0 or gun_2.get_ammo() > 0 or gun_1.cehck_spec() or gun_2.cehck_spec()) and gun_1.get_armor() > 0 and gun_2.get_armor() > 0):
 
 
     if gun_1.get_ammo() > 0 or gun_1.cehck_spec():
@@ -275,9 +302,29 @@ while ((gun_1.get_ammo() > 0 or gun_1.get_ammo() > 0 or gun_1.cehck_spec() or gu
         c1 = gun_1.choice_print()
         c2 = input("enter command sir : ")
         c3 = gun_1.choice(c2)
-        c4 = gun_1.comm_type() 
+        c4 = gun_1.comm_type()
+        if ishost :
+            client1.send(str(gun_1.pos))
+            gun_2.pos = int(client1.recv(1024))
+        else:    
+            mysoc.send(str(gun_1.pos))
+            gun_2.pos = int(mysoc.recv(1024))
         c5 = gun_2.under_attack(c4,gun_1.tar)
         gun_1.give_prize(c5)
+        #mysoc.send(
+        if ishost :
+            client1.send(str(gun_2.gun_armor))
+            gun_1.gun_armor = int(client1.recv(1024))
+        else:    
+            mysoc.send(str(gun_2.gun_armor))
+            gun_1.gun_armor = int(mysoc.recv(1024))
+
+        if ishost :
+            client1.send(str(gun_1.gun_ammo))
+            gun_2.gun_ammo = int(client1.recv(1024))
+        else:    
+            mysoc.send(str(gun_1.gun_ammo))
+            gun_2.gun_ammo = int(mysoc.recv(1024))
         print "enemy coor pos was : " + `gun_2.get_pos()`
         print "your armor is : " + `gun_1.get_armor()`
         print "your ammo is : " + `gun_1.get_ammo()`
@@ -290,6 +337,7 @@ while ((gun_1.get_ammo() > 0 or gun_1.get_ammo() > 0 or gun_1.cehck_spec() or gu
     
 
     if gun_2.get_ammo() > 0 or gun_2.cehck_spec():
+        '''
         gun_2.set_pos()
         c6 = gun_2.choice_print()
         c7 = input("enter command sir : ")
@@ -303,6 +351,7 @@ while ((gun_1.get_ammo() > 0 or gun_1.get_ammo() > 0 or gun_1.cehck_spec() or gu
         print "your ammo is : " + `gun_1.get_ammo()`
         print "enemy armor is : " + `gun_2.get_armor()`
         print "enemy ammo is : " + `gun_2.get_ammo()`
+        '''
         if gun_1.get_armor() == 0:
             print "****you lose you destroyed****"
             break        
@@ -314,11 +363,11 @@ while ((gun_1.get_ammo() > 0 or gun_1.get_ammo() > 0 or gun_1.cehck_spec() or gu
 
 
 print "game ended"
+mysoc.close()
 raw_input("press<enter>")
 
 
 ############################################################
 # bug ha ra inja benevisid :
-
 
 
