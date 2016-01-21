@@ -1,5 +1,6 @@
 import random
 import pygame
+from pygame import *
 
 
 class gun (object):
@@ -234,8 +235,9 @@ class gun (object):
             elif sap == 2 :
                 self.double += 1       
             print "prize code is : " + `sap`
-        else :
-            return False
+            return sap
+        else:
+            return 0
 
      
     def set_tar(self,tar):
@@ -343,7 +345,7 @@ class pc(gun):
 class graphic(object):
     def __init__(self):
         pygame.init()
-        self.screen = pygame.display.set_mode((1006, 682))
+        self.screen = pygame.display.set_mode((1006, 682),FULLSCREEN)
         self.screen.fill((255, 255, 255))
         self.atomic_rockets=1
         self.double_rockets=1
@@ -371,9 +373,9 @@ class graphic(object):
         self.double_deactive= pygame.image.load('double_bomb_deactive.png')
         self.ultra_deactive= pygame.image.load('ultra_bomb_deactive.png')
 
-        self.my_damage=pygame.image.load('Damage/7-you.png')#
+        self.my_damage=pygame.image.load('7-you.png')#
         self.screen.blit(self.my_damage,(825,340))
-        self.enemy_damage=pygame.image.load('Damage/7-enemy.png')#
+        self.enemy_damage=pygame.image.load('7-enemy.png')#
         self.screen.blit(self.enemy_damage,(925,340))
 
         self.target_pos_up=pygame.image.load('target_pos_up_active.png').convert_alpha()
@@ -820,7 +822,7 @@ class graphic(object):
         if bonus_code==1:
             self.screen.blit(self.atomic_bonus,(10,400))
             pygame.display.flip()
-            pygame.time.delay(2000)
+            pygame.time.delay(1000)
             self.screen.blit(self.bonus_pic,(10,400))
             pygame.display.flip()
             self.atomic_rockets+=1
@@ -828,7 +830,7 @@ class graphic(object):
         elif bonus_code==2:
             self.screen.blit(self.double_bonus,(10,400))
             pygame.display.flip()
-            pygame.time.delay(2000)
+            pygame.time.delay(1000)
             self.screen.blit(self.bonus_pic,(10,400))
             pygame.display.flip()
             self.double_rockets+=1
@@ -836,7 +838,7 @@ class graphic(object):
         elif bonus_code==3:
             self.screen.blit(self.ultra_bonus,(10,400))
             pygame.display.flip()
-            pygame.time.delay(2000)
+            pygame.time.delay(1000)
             self.screen.blit(self.bonus_pic,(10,400))
             pygame.display.flip()
             self.ultra_rockets+=1 
@@ -963,20 +965,20 @@ game = graphic()
 
 while ((gun_1.get_ammo() > 0 or gun_2.get_ammo() > 0 or gun_1.cehck_spec() or gun_2.cehck_spec()) and gun_1.get_armor() > 0 and gun_2.get_armor() > 0):
 
-    game.damage(7 - gun_1.get_armor() , 7 - gun_2.get_armor() )
     if gun_1.get_ammo() > 0 or gun_1.cehck_spec():
         game.move_select()
         game.rockets_show()
-        game.damage(7 - gun_1.get_armor() , 7 - gun_2.get_armor() )
         gun_1.set_pos(game.data[0])
         gun_1.set_tar(game.data[1])
         gun_1.choice_print()
         gun_1.choice(game.data[2])
         my_comm = gun_1.comm_type()
         my_check = gun_2.under_attack(my_comm,gun_1.tar)
-        game.tar_hit(my_check)
-        gun_1.give_prize(my_check)
         game.damage(7 - gun_1.get_armor() , 7 - gun_2.get_armor() )
+        game.tar_hit(my_check)
+        prize = gun_1.give_prize(my_check)
+        game.bonus(prize)
+
 
         print "your command was : " + `my_comm`
         print "enemy coor pos was : " + `gun_2.get_pos()`
@@ -1000,13 +1002,12 @@ while ((gun_1.get_ammo() > 0 or gun_2.get_ammo() > 0 or gun_1.cehck_spec() or gu
 
         c9 = gun_2.comm_type()
 
-        game.damage(7 - gun_1.get_armor() , 7 - gun_2.get_armor() )
         print "enemy command code was : " + `c9`
         c10 = gun_1.under_attack(c9,gun_2.tar)
+        game.damage(7 - gun_1.get_armor() , 7 - gun_2.get_armor() )
         game.under_fire(gun_2.tar)
         game.my_hit(c10)
         gun_2.give_prize(c10)
-        game.damage(7 - gun_1.get_armor() , 7 - gun_2.get_armor() )
         print "enemy coor target is : " + `gun_2.tar`
         print "your armor is : " + `gun_1.get_armor()`
         print "your ammo is : " + `gun_1.get_ammo()`
