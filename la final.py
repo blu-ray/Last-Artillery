@@ -500,6 +500,8 @@ class graphic(object):
         
         while not done:
             for event in pygame.event.get():
+
+
                 if event.type == pygame.QUIT:
                         done = True
                 if (self.fire_flag==False and event.type==pygame.KEYDOWN and (event.key == pygame.K_f)) :
@@ -784,7 +786,6 @@ class graphic(object):
             self.ultra_rockets-=1
             if self.ultra_rockets!=0:
                 self.screen.blit(self.ultra_active,(16,360))
-            
         graphic.num_special_rockets(self)
         shot=pygame.mixer.Sound("shot.wav")
         shot.play()
@@ -817,32 +818,40 @@ class graphic(object):
             self.code =3
         return [self.myposition , self.tar_select ,self.code ]
 
+
+
     def bonus(self,bonus_code):
         #sound
         if bonus_code==1:
             self.screen.blit(self.atomic_bonus,(10,400))
             pygame.display.flip()
+            self.atomic_rockets+=1
+            graphic.num_special_rockets(self)
             pygame.time.delay(1000)
             self.screen.blit(self.bonus_pic,(10,400))
             pygame.display.flip()
-            self.atomic_rockets+=1
+
             
         elif bonus_code==2:
             self.screen.blit(self.double_bonus,(10,400))
             pygame.display.flip()
+            self.double_rockets+=1
+            graphic.num_special_rockets(self)
             pygame.time.delay(1000)
             self.screen.blit(self.bonus_pic,(10,400))
             pygame.display.flip()
-            self.double_rockets+=1
+
            
         elif bonus_code==3:
             self.screen.blit(self.ultra_bonus,(10,400))
             pygame.display.flip()
+            self.ultra_rockets+=1
+            graphic.num_special_rockets(self)
             pygame.time.delay(1000)
             self.screen.blit(self.bonus_pic,(10,400))
             pygame.display.flip()
-            self.ultra_rockets+=1 
-        graphic.num_special_rockets(self)
+
+
 ###############################    
     def get_posg(self):
         return self.myposition
@@ -962,7 +971,7 @@ gun_1.set_ammo(ammo)
 gun_2.set_ammo(ammo)
 ####################
 game = graphic()
-
+###game.rockets = ammo
 while ((gun_1.get_ammo() > 0 or gun_2.get_ammo() > 0 or gun_1.cehck_spec() or gun_2.cehck_spec()) and gun_1.get_armor() > 0 and gun_2.get_armor() > 0):
 
     if gun_1.get_ammo() > 0 or gun_1.cehck_spec():
@@ -993,7 +1002,7 @@ while ((gun_1.get_ammo() > 0 or gun_2.get_ammo() > 0 or gun_1.cehck_spec() or gu
     if gun_2.get_armor() == 0:
         ###finish
          print "****you won enemy destroyed****"
-         break
+         break#############
 
     if gun_2.get_ammo() > 0 or gun_2.cehck_spec():
         c6 = gun_2.set_pos()
@@ -1005,7 +1014,12 @@ while ((gun_1.get_ammo() > 0 or gun_2.get_ammo() > 0 or gun_1.cehck_spec() or gu
         print "enemy command code was : " + `c9`
         c10 = gun_1.under_attack(c9,gun_2.tar)
         game.damage(7 - gun_1.get_armor() , 7 - gun_2.get_armor() )
-        game.under_fire(gun_2.tar)
+
+        if c9 == 2:
+            #under double(pos)
+            pass
+        else:
+            game.under_fire(gun_2.tar)
         game.my_hit(c10)
         gun_2.give_prize(c10)
         print "enemy coor target is : " + `gun_2.tar`
@@ -1019,13 +1033,13 @@ while ((gun_1.get_ammo() > 0 or gun_2.get_ammo() > 0 or gun_1.cehck_spec() or gu
     if gun_1.get_armor() == 0:
         ###finish
         print "****you lose you destroyed****"
-        break
+        break######################
 
 
     if gun_1.get_ammo() == 0 and gun_2.get_ammo() == 0 and gun_1.cehck_spec()== False  and gun_2.cehck_spec()== False:
         ###finish
         print "no ammuniation no winner"
-        break
+        break#####################
 
     game.damage(7 - gun_1.get_armor() , 7 - gun_2.get_armor() )
     game.fire_flag = False
