@@ -1,16 +1,16 @@
 import pygame
 
 pygame.init()
-screen = pygame.display.set_mode((576, 608))
+screen = pygame.display.set_mode((1006, 682))
 screen.fill((255, 255, 255))
 done = False
 image = pygame.image.load('1.jpg')
-bg = pygame.image.load('2.jpg')
+bg = pygame.image.load('C://Users/admin/Desktop/final_bg.jpg')
 screen.blit(bg , (0,0))
 clock = pygame.time.Clock()
 x,y = 255,0
 k=5
-screen.blit(image, (255, 525))
+screen.blit(image, (255, 750))
 while not done:
         for event in pygame.event.get():
 
@@ -38,3 +38,4 @@ while not done:
         pygame.display.flip()
 
         i,j=0,0
+                

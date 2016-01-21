@@ -423,7 +423,10 @@ class graphic(object):
         self.atomic_bonus=pygame.image.load("atomic.png")
         self.double_bonus=pygame.image.load("double.png")
         self.ultra_bonus=pygame.image.load("ultra.png")
-         
+
+
+        self.ground_clean=pygame.image.load("ground_hide.png")
+        
         self.screen.blit(self.status_box,(830,550))
         self.screen.blit(self.game_icon,(17,595))       
         pygame.display.flip()
@@ -858,7 +861,7 @@ class graphic(object):
                 self.screen.blit(self.under_fire_artillery,(x,590))
                 pygame.display.flip()
                 pygame.time.delay(700)
-                self.screen.blit(self.artillery , (430,590))
+                self.screen.blit(self.artillery , (x,590))
                 pygame.display.flip()
             elif self.myposition == 1:
                 x = 270
@@ -866,7 +869,7 @@ class graphic(object):
                 self.screen.blit(self.under_fire_artillery,(x,590))
                 pygame.display.flip()
                 pygame.time.delay(700)
-                self.screen.blit(self.artillery , (430,590))
+                self.screen.blit(self.artillery , (x,590))
                 pygame.display.flip()
             elif self.myposition == 2:
                 x= 350
@@ -874,7 +877,7 @@ class graphic(object):
                 self.screen.blit(self.under_fire_artillery,(x,590))
                 pygame.display.flip()
                 pygame.time.delay(700)
-                self.screen.blit(self.artillery , (430,590))
+                self.screen.blit(self.artillery , (x,590))
                 pygame.display.flip()
             elif self.myposition == 4:
                 x = 510
@@ -882,7 +885,7 @@ class graphic(object):
                 self.screen.blit(self.under_fire_artillery,(x,590))
                 pygame.display.flip()
                 pygame.time.delay(700)
-                self.screen.blit(self.artillery , (430,590))
+                self.screen.blit(self.artillery , (x,590))
                 pygame.display.flip()
             elif self.myposition == 5:
                 x = 590
@@ -890,7 +893,7 @@ class graphic(object):
                 self.screen.blit(self.under_fire_artillery,(x,590))
                 pygame.display.flip()
                 pygame.time.delay(700)
-                self.screen.blit(self.artillery , (430,590))
+                self.screen.blit(self.artillery , (x,590))
                 pygame.display.flip()
         else :
                 shot=pygame.mixer.Sound("shot.wav")
@@ -904,7 +907,7 @@ class graphic(object):
                     self.screen.blit(self.ground_damage,(x,610))
                     pygame.display.flip()
                     pygame.time.delay(700)
-                    self.screen.blit(self.white_rockets,(x,610))
+                    self.screen.blit(self.ground_clean,(x,610))
                     pygame.display.flip()
                     
                 elif position == 1:
@@ -913,7 +916,7 @@ class graphic(object):
                     self.screen.blit(self.ground_damage,(x,610))
                     pygame.display.flip()
                     pygame.time.delay(700)
-                    self.screen.blit(self.white_rockets,(x,610))
+                    self.screen.blit(self.ground_clean,(x,610))
                     pygame.display.flip()
                 elif position == 2:
                     x= 350
@@ -921,7 +924,7 @@ class graphic(object):
                     self.screen.blit(self.ground_damage,(x,610))
                     pygame.display.flip()
                     pygame.time.delay(700)
-                    self.screen.blit(self.white_rockets,(x,610))
+                    self.screen.blit(self.ground_clean,(x,610))
                     pygame.display.flip()
                 elif position == 4:
                     x= 510
@@ -929,7 +932,7 @@ class graphic(object):
                     self.screen.blit(self.ground_damage,(x,610))
                     pygame.display.flip()
                     pygame.time.delay(700)
-                    self.screen.blit(self.white_rockets,(x,610))
+                    self.screen.blit(self.ground_clean,(x,610))
                     pygame.display.flip()
                 elif position == 5:
                     x= 590
@@ -937,7 +940,7 @@ class graphic(object):
                     self.screen.blit(self.ground_damage,(x,610))
                     pygame.display.flip()
                     pygame.time.delay(700)
-                    self.screen.blit(self.white_rockets,(x,610))
+                    self.screen.blit(self.ground_clean,(x,610))
                     pygame.display.flip()
 ###############################################################
 ##########################################
