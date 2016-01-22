@@ -176,182 +176,182 @@ class graphic(object):
 
 ##############################az____inja____________________#####################
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                        done = True
-                if (self.fire_flag==False and event.type==pygame.KEYDOWN and (event.key == pygame.K_f) and self.rockets+self.atomic_rockets+self.double_rockets+self.ultra_rockets>=1) :
-                    if normal_flag or atomic_flag or double_flag or ultra_flag :
-                        self.fire_flag=True
-                        self.data = self.fire(self.myposition,x,normal_flag,atomic_flag,double_flag,ultra_flag)
-                        print self.myposition
-                        done = True
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                            done = True
+                    if (self.fire_flag==False and event.type==pygame.KEYDOWN and (event.key == pygame.K_f) and self.rockets+self.atomic_rockets+self.double_rockets+self.ultra_rockets>=1) :
+                        if normal_flag or atomic_flag or double_flag or ultra_flag :
+                            self.fire_flag=True
+                            self.data = self.fire(self.myposition,x,normal_flag,atomic_flag,double_flag,ultra_flag)
+                            print self.myposition
+                            done = True
 
-                if (self.fire_flag==False and event.type == pygame.KEYDOWN and (event.key == pygame.K_LEFT or  event.key == pygame.K_RIGHT)):
-                        pressed = pygame.key.get_pressed()
-                        if pressed[pygame.K_LEFT] and x >= 350:
-                                
-                                self.myposition-=1
-                                for i in range(20):
-                                        self.screen.blit(self.artillery, (x-4, 590))
-                                        x -= 4
-                                        self.screen.blit(self.white,(893,58))
-                                        self.my_pos = self.myfont.render(str(self.myposition), True, (0,0,0))
-                                        self.screen.blit(self.my_pos, (893, 58))
-                                        pygame.display.flip()
-                                        clock.tick(60)
-                           
-                        if pressed[pygame.K_RIGHT] and x <= 535:
-                                self.myposition+=1
-                                for j in range(20):
-                                        self.screen.blit(self.artillery, (x+4, 590))
-                                        x += 4
-                                        self.screen.blit(self.white,(893,58))
-                                        self.my_pos = self.myfont.render(str(self.myposition), True, (0,0,0))
-                                        self.screen.blit(self.my_pos, (893, 58))
-                                        pygame.display.flip()
-                                        clock.tick(60)
-                                
-                if pygame.mouse.get_pressed()[0] :
-                    
-                    pos = pygame.mouse.get_pos()
-                    if self.atomic_button.collidepoint(pos)and not self.fire_flag and self.atomic_rockets!=0:
-                        if not atomic_flag :
-                            self.weapon_select_sound()
-                            atomic_flag=True
-                            double_flag=False
-                            ultra_flag=False
-                            normal_flag=False
-                           
-                            self.screen.blit(self.atomic_deactive,(16,105))
-                            
-                        elif atomic_flag:
-                             self.weapon_select_sound()
-                             atomic_flag=False
-                             normal_flag=True
-                           
-                             self.screen.blit(self.atomic_active,(16,105))
-                            
-                             
-                        print "__________atomic_bomb_________"
-               ####
-                    elif self.double_button.collidepoint(pos) and not self.fire_flag and self.double_rockets!=0:
-                        self.weapon_select_sound()
-                        if not double_flag:
-                            if atomic_flag==True :
-                                
-                                self.screen.blit(self.atomic_active,(16,105))
-                                
-                            if ultra_flag==True :
-                                
-                                self.screen.blit(self.ultra_active,(16,360))
-                                
-                            atomic_flag=False
-                            double_flag=True
-                            ultra_flag=False
-                            normal_flag=False
-                           
-                            self.screen.blit(self.double_deactive,(16,235))
-                            
-                        elif double_flag:
-                             self.weapon_select_sound()
-                             double_flag=False
-                             normal_flag=True
-                             
-                             
-                             self.screen.blit(self.double_active,(16,235))
-                             
-                            
-                        
-                        print "__________double_bomb_________"
+                    if (self.fire_flag==False and event.type == pygame.KEYDOWN and (event.key == pygame.K_LEFT or  event.key == pygame.K_RIGHT)):
+                            pressed = pygame.key.get_pressed()
+                            if pressed[pygame.K_LEFT] and x >= 350:
+
+                                    self.myposition-=1
+                                    for i in range(20):
+                                            self.screen.blit(self.artillery, (x-4, 590))
+                                            x -= 4
+                                            self.screen.blit(self.white,(893,58))
+                                            self.my_pos = self.myfont.render(str(self.myposition), True, (0,0,0))
+                                            self.screen.blit(self.my_pos, (893, 58))
+                                            pygame.display.flip()
+                                            clock.tick(60)
+
+                            if pressed[pygame.K_RIGHT] and x <= 535:
+                                    self.myposition+=1
+                                    for j in range(20):
+                                            self.screen.blit(self.artillery, (x+4, 590))
+                                            x += 4
+                                            self.screen.blit(self.white,(893,58))
+                                            self.my_pos = self.myfont.render(str(self.myposition), True, (0,0,0))
+                                            self.screen.blit(self.my_pos, (893, 58))
+                                            pygame.display.flip()
+                                            clock.tick(60)
+
+                    if pygame.mouse.get_pressed()[0] :
+
+                        pos = pygame.mouse.get_pos()
+                        if self.atomic_button.collidepoint(pos)and not self.fire_flag and self.atomic_rockets!=0:
+                            if not atomic_flag :
+                                self.weapon_select_sound()
+                                atomic_flag=True
+                                double_flag=False
+                                ultra_flag=False
+                                normal_flag=False
+
+                                self.screen.blit(self.atomic_deactive,(16,105))
+
+                            elif atomic_flag:
+                                 self.weapon_select_sound()
+                                 atomic_flag=False
+                                 normal_flag=True
+
+                                 self.screen.blit(self.atomic_active,(16,105))
+
+
+                            print "__________atomic_bomb_________"
                    ####
-                    elif self.ultra_button.collidepoint(pos) and not self.fire_flag and self.ultra_rockets!=0:
-                        self.weapon_select_sound()
-                        if not ultra_flag:
-                            if atomic_flag==True :
-                               
-                                self.screen.blit(self.atomic_active,(16,105))
-                              
-                            if double_flag==True :
-                               
-                                self.screen.blit(self.double_active,(16,235))
-                             
-                            normal_flag=False
-                            atomic_flag=False
-                            double_flag=False
-                            ultra_flag=True
-                         
-                            self.screen.blit(self.ultra_deactive,(16,360))
-                           
-                        elif ultra_flag:
-                             self.weapon_select_sound()
-                             ultra_flag=False
-                             normal_flag=True
-                            
-                            
-                             self.screen.blit(self.ultra_active,(16,360))
-                          
-                        
-                            
-                        print "__________ultra_bomb_________"
-                    
-                    elif self.target_pos_up.collidepoint(pos) and not self.fire_flag:
-                        if self.tar_select<4:
+                        elif self.double_button.collidepoint(pos) and not self.fire_flag and self.double_rockets!=0:
                             self.weapon_select_sound()
-                            self.tar_select=self.tar_select+1
-                            self.screen.blit(self.white,(890,135))
-                            self.target_pos_up=pygame.image.load('target_pos_up_active.png').convert_alpha()
-                            self.screen.blit(self.target_pos_up,(930,135))
-                            pygame.display.flip()
-                            self.target_pos_up =self.target_pos_up.get_rect()
-                            self.target_pos_up.move_ip(930,135)
-        
-                            self.target_pos_down=pygame.image.load('target_pos_down_active.png').convert_alpha()
-                            self.screen.blit(self.target_pos_down,(860,135))
-                            pygame.display.flip()
-                            self.target_pos_down =self.target_pos_down.get_rect()
-                            self.target_pos_down.move_ip(860,135)
-                            self.tar_text=self.myfont.render(str(self.tar_select),3,(0,0,0))###
-                            self.screen.blit(self.tar_text,(894,135))###
-                            print self.tar_select
-                        elif self.tar_select==4:
+                            if not double_flag:
+                                if atomic_flag==True :
+
+                                    self.screen.blit(self.atomic_active,(16,105))
+
+                                if ultra_flag==True :
+
+                                    self.screen.blit(self.ultra_active,(16,360))
+
+                                atomic_flag=False
+                                double_flag=True
+                                ultra_flag=False
+                                normal_flag=False
+
+                                self.screen.blit(self.double_deactive,(16,235))
+
+                            elif double_flag:
+                                 self.weapon_select_sound()
+                                 double_flag=False
+                                 normal_flag=True
+
+
+                                 self.screen.blit(self.double_active,(16,235))
+
+
+
+                            print "__________double_bomb_________"
+                       ####
+                        elif self.ultra_button.collidepoint(pos) and not self.fire_flag and self.ultra_rockets!=0:
                             self.weapon_select_sound()
-                            self.tar_select=self.tar_select+1
-                        ############    
-                            self.screen.blit(self.white,(890,135))
-                            self.screen.blit(self.target_pos_up_de,(930,135))
-                            self.tar_text=self.myfont.render(str(self.tar_select),3,(0,0,0))###
-                            self.screen.blit(self.tar_text,(894,135))###
-                            print self.tar_select
-                        
-                    
-                    elif self.target_pos_down.collidepoint(pos) and not self.fire_flag:
-                        if self.tar_select>2:
-                            self.weapon_select_sound()
-                            self.tar_select=self.tar_select-1
-                            self.screen.blit(self.white,(890,135))
-                            self.target_pos_up=pygame.image.load('target_pos_up_active.png').convert_alpha()
-                            self.screen.blit(self.target_pos_up,(930,135))
-                            pygame.display.flip()
-                            self.target_pos_up =self.target_pos_up.get_rect()
-                            self.target_pos_up.move_ip(930,135)
-                            self.target_pos_down=pygame.image.load('target_pos_down_active.png').convert_alpha()
-                            self.screen.blit(self.target_pos_down,(860,135))
-                            pygame.display.flip()
-                            self.target_pos_down =self.target_pos_down.get_rect()
-                            self.target_pos_down.move_ip(860,135)
-                            self.tar_text=self.myfont.render(str(self.tar_select),3,(0,0,0))###
-                            self.screen.blit(self.tar_text,(894,135))###
-                            print self.tar_select
-                        elif self.tar_select==2:
-                            self.weapon_select_sound()
-                            self.tar_select=self.tar_select-1
-                            self.screen.blit(self.white,(890,135))
-                            self.screen.blit(self.target_pos_down_de,(860,135))
-                            self.tar_text=self.myfont.render(str(self.tar_select),3,(0,0,0))###
-                            self.screen.blit(self.tar_text,(894,135))###
-                            print self.tar_select                    
-                    self.num_special_rockets()
-                    pygame.display.flip()
+                            if not ultra_flag:
+                                if atomic_flag==True :
+
+                                    self.screen.blit(self.atomic_active,(16,105))
+
+                                if double_flag==True :
+
+                                    self.screen.blit(self.double_active,(16,235))
+
+                                normal_flag=False
+                                atomic_flag=False
+                                double_flag=False
+                                ultra_flag=True
+
+                                self.screen.blit(self.ultra_deactive,(16,360))
+
+                            elif ultra_flag:
+                                 self.weapon_select_sound()
+                                 ultra_flag=False
+                                 normal_flag=True
+
+
+                                 self.screen.blit(self.ultra_active,(16,360))
+
+
+
+                            print "__________ultra_bomb_________"
+
+                        elif self.target_pos_up.collidepoint(pos) and not self.fire_flag:
+                            if self.tar_select<4:
+                                self.weapon_select_sound()
+                                self.tar_select=self.tar_select+1
+                                self.screen.blit(self.white,(890,135))
+                                self.target_pos_up=pygame.image.load('target_pos_up_active.png').convert_alpha()
+                                self.screen.blit(self.target_pos_up,(930,135))
+                                pygame.display.flip()
+                                self.target_pos_up =self.target_pos_up.get_rect()
+                                self.target_pos_up.move_ip(930,135)
+
+                                self.target_pos_down=pygame.image.load('target_pos_down_active.png').convert_alpha()
+                                self.screen.blit(self.target_pos_down,(860,135))
+                                pygame.display.flip()
+                                self.target_pos_down =self.target_pos_down.get_rect()
+                                self.target_pos_down.move_ip(860,135)
+                                self.tar_text=self.myfont.render(str(self.tar_select),3,(0,0,0))###
+                                self.screen.blit(self.tar_text,(894,135))###
+                                print self.tar_select
+                            elif self.tar_select==4:
+                                self.weapon_select_sound()
+                                self.tar_select=self.tar_select+1
+                            ############
+                                self.screen.blit(self.white,(890,135))
+                                self.screen.blit(self.target_pos_up_de,(930,135))
+                                self.tar_text=self.myfont.render(str(self.tar_select),3,(0,0,0))###
+                                self.screen.blit(self.tar_text,(894,135))###
+                                print self.tar_select
+
+
+                        elif self.target_pos_down.collidepoint(pos) and not self.fire_flag:
+                            if self.tar_select>2:
+                                self.weapon_select_sound()
+                                self.tar_select=self.tar_select-1
+                                self.screen.blit(self.white,(890,135))
+                                self.target_pos_up=pygame.image.load('target_pos_up_active.png').convert_alpha()
+                                self.screen.blit(self.target_pos_up,(930,135))
+                                pygame.display.flip()
+                                self.target_pos_up =self.target_pos_up.get_rect()
+                                self.target_pos_up.move_ip(930,135)
+                                self.target_pos_down=pygame.image.load('target_pos_down_active.png').convert_alpha()
+                                self.screen.blit(self.target_pos_down,(860,135))
+                                pygame.display.flip()
+                                self.target_pos_down =self.target_pos_down.get_rect()
+                                self.target_pos_down.move_ip(860,135)
+                                self.tar_text=self.myfont.render(str(self.tar_select),3,(0,0,0))###
+                                self.screen.blit(self.tar_text,(894,135))###
+                                print self.tar_select
+                            elif self.tar_select==2:
+                                self.weapon_select_sound()
+                                self.tar_select=self.tar_select-1
+                                self.screen.blit(self.white,(890,135))
+                                self.screen.blit(self.target_pos_down_de,(860,135))
+                                self.tar_text=self.myfont.render(str(self.tar_select),3,(0,0,0))###
+                                self.screen.blit(self.tar_text,(894,135))###
+                                print self.tar_select
+                        self.num_special_rockets()
+                        pygame.display.flip()
 ############################################_____ta inja_______##############################
             for event in pygame.event.get():
                 if pygame.mouse.get_pressed()[0] :
