@@ -1,4 +1,4 @@
-#last update 16-1-2016     7:00 pm           #
+#last update 22-1-2016     7:00 pm           #
                                              #
 #last artilery                               #
                                              #
@@ -351,7 +351,7 @@ class pc(gun):
 gun_1 = gun()
 gun_2 = pc()
 ####################
-ammo = 100
+ammo = 0
 armor = 7
 targets = 5
 ####################
@@ -406,9 +406,16 @@ while ((gun_1.get_ammo() > 0 or gun_2.get_ammo() > 0 or gun_1.cehck_spec() or gu
 
 
     if gun_1.get_ammo() == 0 and gun_2.get_ammo() == 0 and gun_1.cehck_spec()== False  and gun_2.cehck_spec()== False:
-        print "no ammuniation no winner"
-        break
 
+        if gun_1.get_armor() == gun_2.get_armor():
+            print "no ammuniation no winner"
+            break
+        elif gun_1.get_armor() > gun_2.get_armor():
+            print "you win"
+            break
+        else:
+            print "you lost"
+            break
 
 print "game ended"
 raw_input("press<enter>")
