@@ -769,6 +769,7 @@ class graphic(object):
         while True:
             for event in pygame.event.get():
                 if pygame.mouse.get_pressed()[0]:
+                     pos = pygame.mouse.get_pos()
                      if self.exit_button.collidepoint(pos):
                                 pygame.quit()
                      if self.restart_button.collidepoint(pos):

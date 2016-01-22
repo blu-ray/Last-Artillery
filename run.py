@@ -97,6 +97,7 @@ def run():
                     game.pre_loads()
                     game.rockets=ammo
                     game.rockets_show()
+                    game.end_flag = False
                     continue
 
 
@@ -146,6 +147,7 @@ def run():
                     game.pre_loads()
                     game.rockets=ammo
                     game.rockets_show()
+                    game.end_flag = False
                     continue
 
 
@@ -176,6 +178,7 @@ def run():
                         game.pre_loads()
                         game.rockets=ammo
                         game.rockets_show()
+                        game.end_flag = False
                         continue
 
 
@@ -200,6 +203,7 @@ def run():
                         game.pre_loads()
                         game.rockets=ammo
                         game.rockets_show()
+                        game.end_flag = False
                         continue
 
 
@@ -226,6 +230,7 @@ def run():
                         game.pre_loads()
                         game.rockets=ammo
                         game.rockets_show()
+                        game.end_flag = False
                         continue
 
 
