@@ -479,6 +479,8 @@ class graphic(object):
 
         pygame.display.flip()
         normal_flag=True
+        if self.rockets==0:
+            normal_flag=False
         atomic_flag=False
         double_flag=False
         ultra_flag=False
@@ -500,15 +502,14 @@ class graphic(object):
         
         while not done:
             for event in pygame.event.get():
-
-
                 if event.type == pygame.QUIT:
                         done = True
-                if (self.fire_flag==False and event.type==pygame.KEYDOWN and (event.key == pygame.K_f)) :
-                    self.fire_flag=True
-                    self.data = graphic.fire(self,self.myposition,x,normal_flag,atomic_flag,double_flag,ultra_flag)
-                    print self.myposition
-                    done = True
+                if (self.fire_flag==False and event.type==pygame.KEYDOWN and (event.key == pygame.K_f) and self.rockets+self.atomic_rockets+self.double_rockets+self.ultra_rockets>=1) :
+                    if normal_flag or atomic_flag or double_flag or ultra_flag :
+                        self.fire_flag=True
+                        self.data = graphic.fire(self,self.myposition,x,normal_flag,atomic_flag,double_flag,ultra_flag)
+                        print self.myposition
+                        done = True
 
                 if (self.fire_flag==False and event.type == pygame.KEYDOWN and (event.key == pygame.K_LEFT or  event.key == pygame.K_RIGHT)):
                         pressed = pygame.key.get_pressed()
@@ -773,13 +774,14 @@ class graphic(object):
     def fire(self ,myposition,x,normal_flag,atomic_flag,double_flag,ultra_flag):
         if normal_flag:
             self.rockets-=1
+            game.rockets_show()
         elif atomic_flag:
             self.atomic_rockets-=1
             if self.atomic_rockets!=0:
                 self.screen.blit(self.atomic_active,(16,105))
-            
         elif double_flag:
             self.double_rockets-=1
+            pygame.display.flip()
             if self.double_rockets!=0:
                 self.screen.blit(self.double_active,(16,235))
         elif ultra_flag:
@@ -818,40 +820,41 @@ class graphic(object):
             self.code =3
         return [self.myposition , self.tar_select ,self.code ]
 
-
-
     def bonus(self,bonus_code):
         #sound
         if bonus_code==1:
             self.screen.blit(self.atomic_bonus,(10,400))
-            pygame.display.flip()
             self.atomic_rockets+=1
+            self.screen.blit(self.atomic_active,(16,105))
             graphic.num_special_rockets(self)
+            pygame.display.flip()
             pygame.time.delay(1000)
             self.screen.blit(self.bonus_pic,(10,400))
             pygame.display.flip()
-
+            
             
         elif bonus_code==2:
             self.screen.blit(self.double_bonus,(10,400))
-            pygame.display.flip()
             self.double_rockets+=1
+            self.screen.blit(self.double_active,(16,235))
             graphic.num_special_rockets(self)
+            pygame.display.flip()
             pygame.time.delay(1000)
             self.screen.blit(self.bonus_pic,(10,400))
             pygame.display.flip()
-
+            
            
         elif bonus_code==3:
             self.screen.blit(self.ultra_bonus,(10,400))
-            pygame.display.flip()
             self.ultra_rockets+=1
+            self.screen.blit(self.ultra_active,(16,360))
             graphic.num_special_rockets(self)
+            pygame.display.flip()
             pygame.time.delay(1000)
             self.screen.blit(self.bonus_pic,(10,400))
             pygame.display.flip()
-
-
+            
+       
 ###############################    
     def get_posg(self):
         return self.myposition
@@ -913,7 +916,7 @@ class graphic(object):
                 hit=pygame.mixer.Sound("bomb_hit.wav")
                 hit.play()
                 if position == 3:
-                    x = 430
+                    x = 430        
                     pygame.time.delay(1000)
                     self.screen.blit(self.ground_damage,(x,610))
                     pygame.display.flip()
@@ -953,6 +956,122 @@ class graphic(object):
                     pygame.time.delay(700)
                     self.screen.blit(self.ground_clean,(x,610))
                     pygame.display.flip()
+    def under_double(self,pos):
+        shot=pygame.mixer.Sound("shot.wav")
+        shot.play()
+        pygame.time.delay(1000)
+        hit=pygame.mixer.Sound("bomb_hit.wav")
+        hit.play()
+        pygame.time.delay(1000)
+        if pos==1:
+            if self.myposition==1:
+                self.screen.blit(self.under_fire_artillery,(270,590))
+                self.screen.blit(self.ground_damage,(350,610))
+                pygame.display.flip()
+                pygame.time.delay(700)
+                self.screen.blit(self.artillery , (270,590))
+                self.screen.blit(self.ground_clean,(350,610))
+                pygame.display.flip()
+            elif self.myposition==2:
+                
+                self.screen.blit(self.under_fire_artillery,(350,590))
+                self.screen.blit(self.ground_damage,(270,610))
+                pygame.display.flip()
+                pygame.time.delay(700)
+                self.screen.blit(self.artillery , (350,590))
+                self.screen.blit(self.ground_clean,(270,610))
+                pygame.display.flip()
+            else :
+                self.screen.blit(self.ground_damage,(270,610))
+                self.screen.blit(self.ground_damage,(350,610))
+                pygame.display.flip()
+                pygame.time.delay(700)
+                self.screen.blit(self.ground_clean,(270,610))
+                self.screen.blit(self.ground_clean,(350,610))
+
+###################                
+        elif pos==2:
+            if self.myposition==2:
+                self.screen.blit(self.under_fire_artillery,(350,590))
+                self.screen.blit(self.ground_damage,(430,610))
+                pygame.display.flip()
+                pygame.time.delay(700)
+                self.screen.blit(self.artillery , (350,590))
+                self.screen.blit(self.ground_clean,(430,610))
+                pygame.display.flip()
+            elif self.myposition==3:
+                
+                self.screen.blit(self.under_fire_artillery,(430,590))
+                self.screen.blit(self.ground_damage,(350,610))
+                pygame.display.flip()
+                pygame.time.delay(700)
+                self.screen.blit(self.artillery , (430,590))
+                self.screen.blit(self.ground_clean,(350,610))
+                pygame.display.flip()
+            else :
+                self.screen.blit(self.ground_damage,(430,610))
+                self.screen.blit(self.ground_damage,(350,610))
+                pygame.display.flip()
+                pygame.time.delay(700)
+                self.screen.blit(self.ground_clean,(430,610))
+                self.screen.blit(self.ground_clean,(350,610))
+
+#########################
+        elif pos==3:                             
+            if self.myposition==3:
+                self.screen.blit(self.under_fire_artillery,(430,590))
+                self.screen.blit(self.ground_damage,(510,610))
+                pygame.display.flip()
+                pygame.time.delay(700)
+                self.screen.blit(self.artillery , (430,590))
+                self.screen.blit(self.ground_clean,(510,610))
+                pygame.display.flip()
+            elif self.myposition==4:
+                
+                self.screen.blit(self.under_fire_artillery,(510,590))
+                self.screen.blit(self.ground_damage,(430,610))
+                pygame.display.flip()
+                pygame.time.delay(700)
+                self.screen.blit(self.artillery , (510,590))
+                self.screen.blit(self.ground_clean,(430,610))
+                pygame.display.flip()
+            else :
+                self.screen.blit(self.ground_damage,(510,610))
+                self.screen.blit(self.ground_damage,(430,610))
+                pygame.display.flip()
+                pygame.time.delay(700)
+                self.screen.blit(self.ground_clean,(510,610))
+                self.screen.blit(self.ground_clean,(430,610))
+
+########################               
+        elif pos==4 or pos==5:               #1:270://///2:350////// 3:430//////4:510//////5:590
+            if self.myposition==4:
+                self.screen.blit(self.under_fire_artillery,(510,590))
+                self.screen.blit(self.ground_damage,(590,610))
+                pygame.display.flip()
+                pygame.time.delay(700)
+                self.screen.blit(self.artillery , (510,590))
+                self.screen.blit(self.ground_clean,(590,610))
+                pygame.display.flip()
+            elif self.myposition==5:
+                self.screen.blit(self.under_fire_artillery,(590,590))
+                self.screen.blit(self.ground_damage,(510,610))
+                pygame.display.flip()
+                pygame.time.delay(700)
+                self.screen.blit(self.artillery , (590,590))
+                self.screen.blit(self.ground_clean,(510,610))
+                pygame.display.flip()
+            else :
+                self.screen.blit(self.ground_damage,(590,610))
+                self.screen.blit(self.ground_damage,(510,610))
+                pygame.display.flip()
+                pygame.time.delay(700)
+                self.screen.blit(self.ground_clean,(590,610))
+                self.screen.blit(self.ground_clean,(510,610))
+########################
+        
+            
+         
 ###############################################################
 ##########################################
 gun_1 = gun()
@@ -971,7 +1090,8 @@ gun_1.set_ammo(ammo)
 gun_2.set_ammo(ammo)
 ####################
 game = graphic()
-###game.rockets = ammo
+game.rockets=ammo
+game.rockets_show()
 while ((gun_1.get_ammo() > 0 or gun_2.get_ammo() > 0 or gun_1.cehck_spec() or gun_2.cehck_spec()) and gun_1.get_armor() > 0 and gun_2.get_armor() > 0):
 
     if gun_1.get_ammo() > 0 or gun_1.cehck_spec():
@@ -1002,24 +1122,21 @@ while ((gun_1.get_ammo() > 0 or gun_2.get_ammo() > 0 or gun_1.cehck_spec() or gu
     if gun_2.get_armor() == 0:
         ###finish
          print "****you won enemy destroyed****"
-         break#############
+         break
 
     if gun_2.get_ammo() > 0 or gun_2.cehck_spec():
         c6 = gun_2.set_pos()
         c7 = gun_2.choice_print()
         c8 = gun_2.choice()
-
         c9 = gun_2.comm_type()
 
         print "enemy command code was : " + `c9`
         c10 = gun_1.under_attack(c9,gun_2.tar)
         game.damage(7 - gun_1.get_armor() , 7 - gun_2.get_armor() )
-
-        if c9 == 2:
-            #under double(pos)
-            pass
+        if c9==2:
+            game.under_double(gun_2.tar)
         else:
-            game.under_fire(gun_2.tar)
+            game.under_fire(gun_2.tar)########
         game.my_hit(c10)
         gun_2.give_prize(c10)
         print "enemy coor target is : " + `gun_2.tar`
@@ -1029,18 +1146,18 @@ while ((gun_1.get_ammo() > 0 or gun_2.get_ammo() > 0 or gun_1.cehck_spec() or gu
         print "enemy ammo is : " + `gun_2.get_ammo()`
         print "<><><><<><><><><><><><><><><><><>"
 
-
     if gun_1.get_armor() == 0:
         ###finish
         print "****you lose you destroyed****"
-        break######################
+        break
 
-
+    
     if gun_1.get_ammo() == 0 and gun_2.get_ammo() == 0 and gun_1.cehck_spec()== False  and gun_2.cehck_spec()== False:
         ###finish
         print "no ammuniation no winner"
-        break#####################
+        break
 
+    
     game.damage(7 - gun_1.get_armor() , 7 - gun_2.get_armor() )
     game.fire_flag = False
 game.damage(7 - gun_1.get_armor() , 7 - gun_2.get_armor() )
