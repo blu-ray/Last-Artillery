@@ -182,7 +182,7 @@ class gun (object):
         else:
             print "wrong pos"
             print("enter coordinate again ")
-            self.set_pos()
+            self.set_pos(input("enter your coordinate:"))
 
     def get_pos(self):
         return self.pos
@@ -256,3 +256,14 @@ class gun (object):
         self.double = 1
         self.pos = 3
         self.tar = 3
+
+    def get_status(self):
+        return str(self.atomic)+str(self.ultra) + str(self.double) + str(self.gun_ammo)
+
+    def update_status(self,string):
+        self.atomic = string[0]
+        self.ultra = string[1]
+        self.double = string[2]
+        self.gun_ammo = string[3:]
+        
+    

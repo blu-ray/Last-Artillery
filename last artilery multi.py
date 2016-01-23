@@ -252,6 +252,14 @@ class gun (object):
         else :
             return False
 
+    def get_status(self):
+        return str(self.atomic)+str(self.ultra) + str(self.double) + str(self.gun_ammo)
+
+    def update_status(self,string):
+        self.atomic = string[0]
+        self.ultra = string[1]
+        self.double = string[2]
+        self.gun_ammo = string[3:]
         
     
 ##########################################
@@ -274,7 +282,7 @@ gun_2.set_ammo(ammo)
 mysoc=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 role = raw_input("do you want to be host or client? ")
 
-if role=="host" :
+if role=="host" : #baz kardan port roye host va montazere vasl shodan az taraf client mandan
     ishost=True
     host=socket.gethostname()
     port=12349
@@ -283,12 +291,12 @@ if role=="host" :
     client1, addr=mysoc.accept()
     print "got connection from", addr
     
-if role == "client" :
+if role == "client" : #vasl shodan be host
     ishost=False
     host = raw_input("host Computername or IP :")
     port=12349
     mysoc.connect((host,port))
-    gun_1.set_pos()
+    gun_1.set_pos() #taaiin mogheiate avalie client bedone shelik (host chon dar dast aval pas az taiin moghiat shelik mikonad niazi ba taiin moghiate avalie bedon shelik nadarad
 
 
 notfirstround=False
@@ -300,8 +308,8 @@ while ((gun_1.get_ammo() > 0 or gun_2.get_ammo() > 0 or gun_1.cehck_spec() or gu
             if notfirstround :
                 
                 string = client1.recv(1024)
-                gun_1.gun_armor =int(string[0])
-                gun_2.gun_ammo = int(string[1:])
+                gun_1.gun_armor =int(string[0]) #daryaft armor gune ma az harif . chon dast aval harif client shelik nakarde baraye hamin az daste dovom in khat ra ejra mikonim
+                gun_2.update_status(string[1:]) #daryaft ammo gune harif (daste aval chon hanoz harif shlik nakarde in khat ra az dast dovom ejra mikonim)
                 if gun_1.gun_armor == 0:
                     print "****you lose you destroyed****"
                     break
@@ -311,8 +319,8 @@ while ((gun_1.get_ammo() > 0 or gun_2.get_ammo() > 0 or gun_1.cehck_spec() or gu
             c2 = input("enter command sir : ")
             c3 = gun_1.choice(c2)
             c4 = gun_1.comm_type()
-            client1.send(str(gun_1.pos))
-            gun_2.pos = int(client1.recv(1))
+            client1.send(str(gun_1.pos)) #ferestadan mogheiate gune ma be harif
+            gun_2.pos = int(client1.recv(1)) #daryaft mogheiate gune harif
             c5 = gun_2.under_attack(c4,gun_1.tar)
             gun_1.give_prize(c5)
             
@@ -323,7 +331,7 @@ while ((gun_1.get_ammo() > 0 or gun_2.get_ammo() > 0 or gun_1.cehck_spec() or gu
             print "enemy ammo is : " + `gun_2.get_ammo()`
             print "<><><><><><><><><><><><><><><><><>"
 
-            client1.send(str(gun_2.gun_armor)+str(gun_1.gun_ammo))
+            client1.send(str(gun_2.gun_armor)+gun_1.get_status()) #ferestadan armore gune harif (pas az daryaft moghiat dar khat haye bala gun_2 ra under attack gozashtim va armor an ra taiin kardim hal armorash ra be harif mifrestim) va ferestadane ammoye gune ma be harif
             notfirstround=True
 
             if gun_2.get_armor() == 0:
@@ -332,11 +340,11 @@ while ((gun_1.get_ammo() > 0 or gun_2.get_ammo() > 0 or gun_1.cehck_spec() or gu
 
         else:
 
-            mysoc.send(str(gun_1.pos))
-            gun_2.pos = int(mysoc.recv(1))
-            string=mysoc.recv(1024)
-            gun_1.gun_armor =int(string[0])
-            gun_2.gun_ammo = int(string[1:])
+            mysoc.send(str(gun_1.pos)) #ferestadan mogheiate gune ma (daste aval moghiat kharej while taiin shode (dar bala ghesmate if role='client'))
+            gun_2.pos = int(mysoc.recv(1)) #daryaft moghiate gune harif
+            string=mysoc.recv(1024) 
+            gun_1.gun_armor =int(string[0]) #daryaft armore gun ma
+            gun_2.update_status(string[1:]) #daryaft ammoye gun harif
             if gun_1.gun_armor == 0:
                 print "****you lose you destroyed****"
                 break
@@ -356,7 +364,7 @@ while ((gun_1.get_ammo() > 0 or gun_2.get_ammo() > 0 or gun_1.cehck_spec() or gu
             print "enemy ammo is : " + `gun_2.get_ammo()`
             print "<><><><><><><><><><><><><><><><><>"
 
-            mysoc.send(str(gun_2.gun_armor)+str(gun_1.gun_ammo))
+            mysoc.send(str(gun_2.gun_armor)+ gun_1.get_status() ) #ferestadane ammoye gune ma va armore gune harif be harif
 
             if gun_2.get_armor() == 0:
                 print "****you won enemy destroyed****"
