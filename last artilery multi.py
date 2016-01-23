@@ -145,10 +145,11 @@ class gun (object):
                 print "didn't hit"
                 return False
 
-    def under_double(self,x):
+    def under_double(self, x):
+        """ double hit """
         if self.gun_armor > 0:
-            if self.pos > 0  and self.pos < self.targets  :
-                if self.pos == x or self.pos == x+1:
+            if x == 1:
+                if self.pos == 1 or self.pos == 2:
                     self.gun_armor -= 1
                     if self.gun_armor > 0:
                         print "target hit"
@@ -156,8 +157,35 @@ class gun (object):
                     else:
                         print "target destroyed"
                         return True
-            if self.pos == self.targets:
-                if self.pos == x or self.pos == x-1:
+            elif x == 2:
+                if self.pos == 3 or self.pos == 2:
+                    self.gun_armor -= 1
+                    if self.gun_armor > 0:
+                        print "target hit"
+                        return True
+                    else:
+                        print "target destroyed"
+                        return True
+            elif x == 3:
+                if self.pos == 3 or self.pos == 4:
+                    self.gun_armor -= 1
+                    if self.gun_armor > 0:
+                        print "target hit"
+                        return True
+                    else:
+                        print "target destroyed"
+                        return True
+            elif x == 4:
+                if self.pos == 4 or self.pos == 5:
+                    self.gun_armor -= 1
+                    if self.gun_armor > 0:
+                        print "target hit"
+                        return True
+                    else:
+                        print "target destroyed"
+                        return True
+            elif x == 5:
+                if self.pos == 5 or self.pos == 4:
                     self.gun_armor -= 1
                     if self.gun_armor > 0:
                         print "target hit"
