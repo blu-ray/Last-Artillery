@@ -285,12 +285,14 @@ class gun (object):
         self.tar = 3
 
     def get_status(self):
-        return str(self.atomic)+str(self.ultra) + str(self.double) + str(self.gun_ammo)
+        return str(self.atomic)+str(self.ultra) + str(self.double)+ str(self.tar) + str(self.gun_ammo)
 
     def update_status(self,string):
-        self.atomic = string[0]
-        self.ultra = string[1]
-        self.double = string[2]
-        self.gun_ammo = string[3:]
+        self.atomic =int( string[0])
+        self.ultra = int(string[1])
+        self.double = int( string[2])
+        self.tar = int(string[3])
+        self.gun_ammo = int(string[4:])
         
+    
     
