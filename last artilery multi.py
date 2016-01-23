@@ -253,13 +253,14 @@ class gun (object):
             return False
 
     def get_status(self):
-        return str(self.atomic)+str(self.ultra) + str(self.double) + str(self.gun_ammo)
+        return str(self.atomic)+str(self.ultra) + str(self.double)+ str(self.tar) + str(self.gun_ammo)
 
     def update_status(self,string):
-        self.atomic = string[0]
-        self.ultra = string[1]
-        self.double = string[2]
-        self.gun_ammo = string[3:]
+        self.atomic =int( string[0])
+        self.ultra = int(string[1])
+        self.double = int( string[2])
+        self.tar = int(string[3])
+        self.gun_ammo = int(string[4:])
         
     
 ##########################################
@@ -309,7 +310,7 @@ while ((gun_1.get_ammo() > 0 or gun_2.get_ammo() > 0 or gun_1.cehck_spec() or gu
                 
                 string = client1.recv(1024)
                 gun_1.gun_armor =int(string[0]) #daryaft armor gune ma az harif . chon dast aval harif client shelik nakarde baraye hamin az daste dovom in khat ra ejra mikonim
-                gun_2.update_status(string[1:]) #daryaft ammo gune harif (daste aval chon hanoz harif shlik nakarde in khat ra az dast dovom ejra mikonim)
+                gun_2.update_status(string[1:]) #daryaft ammo va target gune harif (daste aval chon hanoz harif shlik nakarde in khat ra az dast dovom ejra mikonim)
                 if gun_1.gun_armor == 0:
                     print "****you lose you destroyed****"
                     break
@@ -331,7 +332,7 @@ while ((gun_1.get_ammo() > 0 or gun_2.get_ammo() > 0 or gun_1.cehck_spec() or gu
             print "enemy ammo is : " + `gun_2.get_ammo()`
             print "<><><><><><><><><><><><><><><><><>"
 
-            client1.send(str(gun_2.gun_armor)+gun_1.get_status()) #ferestadan armore gune harif (pas az daryaft moghiat dar khat haye bala gun_2 ra under attack gozashtim va armor an ra taiin kardim hal armorash ra be harif mifrestim) va ferestadane ammoye gune ma be harif
+            client1.send(str(gun_2.gun_armor)+gun_1.get_status()) #ferestadan armore gune harif (pas az daryaft moghiat dar khat haye bala gun_2 ra under attack gozashtim va armor an ra taiin kardim hal armorash ra be harif mifrestim) va ferestadane target va ammoye gune ma be harif
             notfirstround=True
 
             if gun_2.get_armor() == 0:
@@ -344,7 +345,7 @@ while ((gun_1.get_ammo() > 0 or gun_2.get_ammo() > 0 or gun_1.cehck_spec() or gu
             gun_2.pos = int(mysoc.recv(1)) #daryaft moghiate gune harif
             string=mysoc.recv(1024) 
             gun_1.gun_armor =int(string[0]) #daryaft armore gun ma
-            gun_2.update_status(string[1:]) #daryaft ammoye gun harif
+            gun_2.update_status(string[1:]) #daryaft target va ammoye gun harif
             if gun_1.gun_armor == 0:
                 print "****you lose you destroyed****"
                 break
@@ -364,7 +365,7 @@ while ((gun_1.get_ammo() > 0 or gun_2.get_ammo() > 0 or gun_1.cehck_spec() or gu
             print "enemy ammo is : " + `gun_2.get_ammo()`
             print "<><><><><><><><><><><><><><><><><>"
 
-            mysoc.send(str(gun_2.gun_armor)+ gun_1.get_status() ) #ferestadane ammoye gune ma va armore gune harif be harif
+            mysoc.send(str(gun_2.gun_armor)+ gun_1.get_status() ) #ferestadane target va ammoye gune ma va armore gune harif be harif
 
             if gun_2.get_armor() == 0:
                 print "****you won enemy destroyed****"
