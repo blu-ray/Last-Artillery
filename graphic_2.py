@@ -752,8 +752,10 @@ class graphic(object):
         pygame.quit()
 
     def move(self):
+        pygame.display.flip()
+        clock = pygame.time.Clock()
         done=False
-        while not done and not self.end_flag:
+        while not done :
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                         done = True
@@ -769,6 +771,7 @@ class graphic(object):
                                         self.screen.blit(self.my_pos, (893, 58))
                                         pygame.display.flip()
                                         clock.tick(60)
+                                
                         if pressed[pygame.K_RIGHT] and x <= 535:
                                 self.myposition+=1
                                 for j in range(20):
@@ -779,6 +782,7 @@ class graphic(object):
                                         self.screen.blit(self.my_pos, (893, 58))
                                         pygame.display.flip()
                                         clock.tick(60)
+                               
                         if event.type == pygame.KEYDOWN and (event.key == pygame.K_ENTER):
                             return self.myposition
 

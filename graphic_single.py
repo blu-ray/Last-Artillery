@@ -3,6 +3,8 @@ import pygame
 from pygame import *
 class graphic(object):
     def __init__(self):
+        self.pre_loads()
+    def pre_loads(self):
         pygame.init()
         self.screen = pygame.display.set_mode((1006, 682),FULLSCREEN)
         self.screen.fill((255, 255, 255))
@@ -89,7 +91,7 @@ class graphic(object):
         self.ground_clean=pygame.image.load("ground_hide.png")
         
         self.screen.blit(self.status_box,(830,550))
-        self.screen.blit(self.game_icon,(17,595))       
+        
         pygame.display.flip()
         
         self.fire_flag=False
@@ -122,17 +124,17 @@ class graphic(object):
         self.screen.blit(self.my_pos, (893, 58))
         self.screen.blit(self.tar_text,(892,135))
 
-        self.exit_button=pygame.image.load("exit_button").convert_alpha()
-        self.screen.blit(self.exit_button,(10,600))
+        self.exit_button=pygame.image.load("exit.png").convert_alpha()
+        self.screen.blit(self.exit_button,(20,635))
         pygame.display.flip()
         self.exit_button =self.exit_button.get_rect()
-        self.exit_button.move_ip(10,600)
+        self.exit_button.move_ip(20,635)
 
-        self.restart_button=pygame.image.load("restart_button").convert_alpha()
-        self.screen.blit(self.restart_button,(10,500))
+        self.restart_button=pygame.image.load("restart.png").convert_alpha()
+        self.screen.blit(self.restart_button,(20,600))
         pygame.display.flip()
-        self.exit_button =self.exit_button.get_rect()
-        self.exit_button.move_ip(10,500)
+        self.restart_button =self.restart_button.get_rect()
+        self.restart_button.move_ip(20,600)
         
 
 
@@ -171,11 +173,9 @@ class graphic(object):
         k=5
         done = False
         
-        while not done:
-            if not self.end_flag:
+        while not done and not self.end_flag:
 
 ##############################az____inja____________________#####################
-
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                             done = True
@@ -212,8 +212,11 @@ class graphic(object):
                                             clock.tick(60)
 
                     if pygame.mouse.get_pressed()[0] :
-
                         pos = pygame.mouse.get_pos()
+                        if self.exit_button.collidepoint(pos):
+                            return "exit"
+                        if self.restart_button.collidepoint(pos):
+                            return "restart"
                         if self.atomic_button.collidepoint(pos)and not self.fire_flag and self.atomic_rockets!=0:
                             if not atomic_flag :
                                 self.weapon_select_sound()
@@ -353,16 +356,6 @@ class graphic(object):
                         self.num_special_rockets()
                         pygame.display.flip()
 ############################################_____ta inja_______##############################
-            for event in pygame.event.get():
-                if pygame.mouse.get_pressed()[0] :
-                    pos = pygame.mouse.get_pos()
-                    if self.exit_button.collidepoint(pos):
-                        return "exit"
-                    elif self.restart_button.collidepoint(pos):
-                        return "restart"
-                        
-        #i,j=0,0    
-
     def bg_music(self):
         pygame.mixer.music.load("background_music.mp3")
         pygame.mixer.music.play(10000)
@@ -773,6 +766,14 @@ class graphic(object):
             self.screen.blit(self.you_lost_pic,(300 ,200))
             pygame.display.flip()
 
-        pygame.time.delay(3000)
-        pygame.quit()
+        while True:
+            for event in pygame.event.get():
+                if pygame.mouse.get_pressed()[0]:
+                     if self.exit_button.collidepoint(pos):
+                                return "exit"
+                     if self.restart_button.collidepoint(pos):
+                                return "restart"
+                
+            #pygame.time.delay(3000)
+        #pygame.quit()
 
