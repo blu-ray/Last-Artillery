@@ -1,4 +1,4 @@
-#last update 22 january 2016    16:30 pm     #
+#last update 24 january 2016    2:00 AM      #
                                              #
 #last artilery                               #
                                              #
@@ -6,7 +6,7 @@
 ##############################################
 import random
 import socket
-
+from cryptography import *
 
 class gun (object):
 
@@ -261,7 +261,20 @@ class gun (object):
         self.double = int( string[2])
         self.tar = int(string[3])
         self.gun_ammo = int(string[4:])
-        
+
+def make_prime():
+    prime_list=[2]
+    for i in range(3,500):
+        flag=True
+        for j in prime_list:
+            if i%j==0 :
+                flag=False
+                break
+            if j>i**0.5 :
+                break
+        if flag :
+            prime_list.append(i)
+    return prime_list        
     
 ##########################################
 gun_1 = gun()
@@ -282,21 +295,42 @@ gun_2.set_ammo(ammo)
 #defining host or client and connect to host
 mysoc=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 role = raw_input("do you want to be host or client? ")
-
+key1='#1s[A}!@g'
 if role=="host" : #baz kardan port roye host va montazere vasl shodan az taraf client mandan
     ishost=True
     host=socket.gethostname()
-    port=12349
+    port=12350
     mysoc.bind((host,port))
     mysoc.listen(5)
     client1, addr=mysoc.accept()
     print "got connection from", addr
-    
+
+    prime_list=make_prime() #sakht klid moshtarak
+    randprime=prime_list[random.randrange(10,len(prime_list))]
+    pubnum=random.randrange(5,5000)
+    client1.send(str(randprime)+ '+' + str(pubnum))
+    hostnum=random.randrange(2,50)
+    first_calc=(pubnum**hostnum)%randprime
+    client1.send(str(first_calc))
+    cfirst_calc=int(client1.recv(1024))
+    key2=((cfirst_calc)**hostnum)%randprime
+        
 if role == "client" : #vasl shodan be host
     ishost=False
     host = raw_input("host Computername or IP :")
-    port=12349
+    port=12350
     mysoc.connect((host,port))
+
+    string=mysoc.recv(1024) #sakht klid moshtarak
+    i=string.find('+')
+    randprime=int(string[:i])
+    pubnum=int(string[i+1:])
+    clientnum=random.randrange(2,50)
+    first_calc=(pubnum**clientnum)%randprime
+    mysoc.send(str(first_calc))
+    hfirst_calc=int(mysoc.recv(1024))
+    key2=((hfirst_calc)**clientnum)%randprime
+
     gun_1.set_pos() #taaiin mogheiate avalie client bedone shelik (host chon dar dast aval pas az taiin moghiat shelik mikonad niazi ba taiin moghiate avalie bedon shelik nadarad
 
 
@@ -308,12 +342,18 @@ while ((gun_1.get_ammo() > 0 or gun_2.get_ammo() > 0 or gun_1.cehck_spec() or gu
         if ishost :
             if notfirstround :
                 
-                string = client1.recv(1024)
+                string = decrypt(client1.recv(1024),key1,key2)
                 gun_1.gun_armor =int(string[0]) #daryaft armor gune ma az harif . chon dast aval harif client shelik nakarde baraye hamin az daste dovom in khat ra ejra mikonim
                 gun_2.update_status(string[1:]) #daryaft ammo va target gune harif (daste aval chon hanoz harif shlik nakarde in khat ra az dast dovom ejra mikonim)
                 if gun_1.gun_armor == 0:
                     print "****you lose you destroyed****"
                     break
+                print "enemy target was : " + `gun_2.tar`
+                print "your armor is : " + `gun_1.get_armor()`
+                print "your ammo is : " + `gun_1.get_ammo()`
+                print "enemy armor is : " + `gun_2.get_armor()`
+                print "enemy ammo is : " + `gun_2.get_ammo()`
+                print "<><><><><><><><><><><><><><><><><>"
             gun_1.set_pos()
 
             c1 = gun_1.choice_print()
@@ -332,7 +372,7 @@ while ((gun_1.get_ammo() > 0 or gun_2.get_ammo() > 0 or gun_1.cehck_spec() or gu
             print "enemy ammo is : " + `gun_2.get_ammo()`
             print "<><><><><><><><><><><><><><><><><>"
 
-            client1.send(str(gun_2.gun_armor)+gun_1.get_status()) #ferestadan armore gune harif (pas az daryaft moghiat dar khat haye bala gun_2 ra under attack gozashtim va armor an ra taiin kardim hal armorash ra be harif mifrestim) va ferestadane target va ammoye gune ma be harif
+            client1.send(encrypt(str(gun_2.gun_armor)+gun_1.get_status(),key1,key2)) #ferestadan armore gune harif (pas az daryaft moghiat dar khat haye bala gun_2 ra under attack gozashtim va armor an ra taiin kardim hal armorash ra be harif mifrestim) va ferestadane target va ammoye gune ma be harif
             notfirstround=True
 
             if gun_2.get_armor() == 0:
@@ -343,12 +383,18 @@ while ((gun_1.get_ammo() > 0 or gun_2.get_ammo() > 0 or gun_1.cehck_spec() or gu
 
             mysoc.send(str(gun_1.pos)) #ferestadan mogheiate gune ma (daste aval moghiat kharej while taiin shode (dar bala ghesmate if role='client'))
             gun_2.pos = int(mysoc.recv(1)) #daryaft moghiate gune harif
-            string=mysoc.recv(1024) 
+            string=decrypt(mysoc.recv(1024),key1,key2) 
             gun_1.gun_armor =int(string[0]) #daryaft armore gun ma
             gun_2.update_status(string[1:]) #daryaft target va ammoye gun harif
             if gun_1.gun_armor == 0:
                 print "****you lose you destroyed****"
                 break
+            print "enemy target was : " + `gun_2.tar`
+            print "your armor is : " + `gun_1.get_armor()`
+            print "your ammo is : " + `gun_1.get_ammo()`
+            print "enemy armor is : " + `gun_2.get_armor()`
+            print "enemy ammo is : " + `gun_2.get_ammo()`
+            print "<><><><><><><><><><><><><><><><><>"
             gun_1.set_pos()
 
             c1 = gun_1.choice_print()
@@ -365,7 +411,7 @@ while ((gun_1.get_ammo() > 0 or gun_2.get_ammo() > 0 or gun_1.cehck_spec() or gu
             print "enemy ammo is : " + `gun_2.get_ammo()`
             print "<><><><><><><><><><><><><><><><><>"
 
-            mysoc.send(str(gun_2.gun_armor)+ gun_1.get_status() ) #ferestadane target va ammoye gune ma va armore gune harif be harif
+            mysoc.send(encrypt(str(gun_2.gun_armor)+ gun_1.get_status(),key1,key2) ) #ferestadane target va ammoye gune ma va armore gune harif be harif
 
             if gun_2.get_armor() == 0:
                 print "****you won enemy destroyed****"
