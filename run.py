@@ -33,7 +33,37 @@ def run():
 
         if gun_1.get_ammo() > 0 or gun_1.cehck_spec():
             condition = game.move_select()
-            if condition != "restart":
+
+
+            if condition == "exit":
+                pygame.quit()
+                break
+
+
+
+            elif condition == "restart":
+
+                ammo = 100
+                armor = 7
+                targets = 5
+                ####################
+                gun_1.set_targets(targets)
+                gun_2.set_targets(targets)
+                gun_1.set_armor(armor)
+                gun_2.set_armor(armor)
+                gun_1.set_ammo(ammo)
+                gun_2.set_ammo(ammo)
+                gun_1.reset()
+                gun_2.reset()
+                gun_2.set_pos()
+                ####################
+                game.pre_loads()
+                game.rockets=ammo
+                game.rockets_show()
+                continue
+
+
+            else:
                 game.rockets_show()
                 gun_1.set_pos(game.data[0])
                 gun_1.set_tar(game.data[1])
@@ -55,26 +85,6 @@ def run():
                 print "enemy ammo is : " + `gun_2.get_ammo()`
                 print "<><><><><><><><><><><><><><><><><><>\n"
 
-            elif condition == "restart":
-
-                ammo = 100
-                armor = 7
-                targets = 5
-                ####################
-                gun_1.set_targets(targets)
-                gun_2.set_targets(targets)
-                gun_1.set_armor(armor)
-                gun_2.set_armor(armor)
-                gun_2.set_pos()
-                gun_1.set_ammo(ammo)
-                gun_2.set_ammo(ammo)
-                ####################
-                game.pre_loads()
-                game.rockets=ammo
-                game.rockets_show()
-                continue
-
-
 
             if gun_2.get_armor() == 0:
                 ###finish
@@ -90,16 +100,20 @@ def run():
                     gun_2.set_targets(targets)
                     gun_1.set_armor(armor)
                     gun_2.set_armor(armor)
-                    gun_2.set_pos()
                     gun_1.set_ammo(ammo)
                     gun_2.set_ammo(ammo)
+                    gun_1.reset()
+                    gun_2.reset()
+                    gun_2.set_pos()
                     ####################
                     game.pre_loads()
                     game.rockets=ammo
                     game.rockets_show()
                     game.end_flag = False
                     continue
-
+                 else:
+                        pygame.quit()
+                        break
 
 
 
@@ -140,16 +154,20 @@ def run():
                     gun_2.set_targets(targets)
                     gun_1.set_armor(armor)
                     gun_2.set_armor(armor)
-                    gun_2.set_pos()
                     gun_1.set_ammo(ammo)
                     gun_2.set_ammo(ammo)
+                    gun_1.reset()
+                    gun_2.reset()
+                    gun_2.set_pos()
                     ####################
                     game.pre_loads()
                     game.rockets=ammo
                     game.rockets_show()
                     game.end_flag = False
                     continue
-
+                else:
+                        pygame.quit()
+                        break
 
 
 
@@ -171,15 +189,20 @@ def run():
                         gun_2.set_targets(targets)
                         gun_1.set_armor(armor)
                         gun_2.set_armor(armor)
-                        gun_2.set_pos()
                         gun_1.set_ammo(ammo)
                         gun_2.set_ammo(ammo)
+                        gun_1.reset()
+                        gun_2.reset()
+                        gun_2.set_pos()
                         ####################
                         game.pre_loads()
                         game.rockets=ammo
                         game.rockets_show()
                         game.end_flag = False
                         continue
+                    else:
+                        pygame.quit()
+                        break
 
 
 
@@ -196,16 +219,20 @@ def run():
                         gun_2.set_targets(targets)
                         gun_1.set_armor(armor)
                         gun_2.set_armor(armor)
-                        gun_2.set_pos()
                         gun_1.set_ammo(ammo)
                         gun_2.set_ammo(ammo)
+                        gun_1.reset()
+                        gun_2.reset()
+                        gun_2.set_pos()
                         ####################
                         game.pre_loads()
                         game.rockets=ammo
                         game.rockets_show()
                         game.end_flag = False
                         continue
-
+                    else:
+                        pygame.quit()
+                        break
 
 
 
@@ -223,20 +250,24 @@ def run():
                         gun_2.set_targets(targets)
                         gun_1.set_armor(armor)
                         gun_2.set_armor(armor)
-                        gun_2.set_pos()
                         gun_1.set_ammo(ammo)
                         gun_2.set_ammo(ammo)
+                        gun_1.reset()
+                        gun_2.reset()
+                        gun_2.set_pos()
                         ####################
                         game.pre_loads()
                         game.rockets=ammo
                         game.rockets_show()
                         game.end_flag = False
                         continue
-
+                    else:
+                        pygame.quit()
+                        break
 
             game.damage(7 - gun_1.get_armor() , 7 - gun_2.get_armor() )
             game.fire_flag = False
-
+            
 
 
 

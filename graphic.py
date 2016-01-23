@@ -214,7 +214,7 @@ class graphic(object):
                     if pygame.mouse.get_pressed()[0] :
                         pos = pygame.mouse.get_pos()
                         if self.exit_button.collidepoint(pos):
-                            pygame.quit()
+                            return "exit"
                         if self.restart_button.collidepoint(pos):
                             return "restart"
                         if self.atomic_button.collidepoint(pos)and not self.fire_flag and self.atomic_rockets!=0:
@@ -771,7 +771,7 @@ class graphic(object):
                 if pygame.mouse.get_pressed()[0]:
                      pos = pygame.mouse.get_pos()
                      if self.exit_button.collidepoint(pos):
-                                pygame.quit()
+                                return "exit"
                      if self.restart_button.collidepoint(pos):
                                 return "restart"
                 
