@@ -1162,14 +1162,15 @@ class gun (object):
             self.set_tar(tar)
 
     def get_status(self):
-        return str(self.atomic)+str(self.ultra) + str(self.double)+ str(self.tar) + str(self.gun_ammo)
+        return str(self.atomic)+str(self.ultra) + str(self.double)+ str(self.tar)+ str(self.command) + str(self.gun_ammo)
 
     def update_status(self,string):
         self.atomic =int( string[0])
         self.ultra = int(string[1])
         self.double = int( string[2])
         self.tar = int(string[3])
-        self.gun_ammo = int(string[4:])
+        self.command = int(string[4])
+        self.gun_ammo = int(string[5:])
 
 def make_prime():
     prime_list=[2]
