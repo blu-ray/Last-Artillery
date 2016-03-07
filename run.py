@@ -3,38 +3,7 @@ from pc import *
 from graphic import *
 
 
-def run():  #run the game
-    gun_1 = gun()
-    gun_2 = pc()
-    ammo = 100
-    armor = 7
-    targets = 5
-    gun_1.set_targets(targets)
-    gun_2.set_targets(targets)
-    gun_1.set_armor(armor)
-    gun_2.set_armor(armor)
-    gun_2.set_pos()
-    gun_1.set_ammo(ammo)
-    gun_2.set_ammo(ammo)
-    game = graphic()
-    game.rockets = ammo
-    game.rockets_show()
-
-
-    while ((gun_1.get_ammo() > 0 or gun_2.get_ammo() > 0 or gun_1.cehck_spec() or gun_2.cehck_spec()) and gun_1.get_armor() > 0 and gun_2.get_armor() > 0):
-
-        if gun_1.get_ammo() > 0 or gun_1.cehck_spec():
-            condition = game.move_select()
-
-            if condition == "exit":   #  gui
-                pygame.quit()
-                break
-
-            elif condition == "restart":  #gui
-
-                ammo = 100
-                armor = 7
-                targets = 5
+def run():                 targets = 5
                 ####################
                 gun_1.set_targets(targets)
                 gun_2.set_targets(targets)
